@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,11 +10,11 @@ import '../../model/User/UserController.dart';
 import '../../services/auth.dart';
 
 class Register extends StatefulWidget {
-  String? email;
-  String? password;
-  String? name;
-  String? contact;
-  String? address;
+  String email;
+  String password;
+  String name;
+  String contact;
+  String address;
   Register(this.email, this.password, this.name, this.contact, this.address);
 
   @override
@@ -24,11 +26,11 @@ class _RegisterState extends State<Register> {
   UserController user = Get.find();
 
   final _formKey = GlobalKey<FormState>();
-  String? email;
-  String? password;
-  String? name;
-  String? contact;
-  String? address;
+  String email;
+  String password;
+  String name;
+  String contact;
+  String address;
   _RegisterState(
       this.email, this.password, this.name, this.contact, this.address);
 
@@ -174,13 +176,21 @@ class _RegisterState extends State<Register> {
                     width: double.infinity,
                     child: ElevatedButton(
                         onPressed: () async {
-                          await _authService.signUpWithEmailandPassword(email!,
-                              password!, name!, contact!, address!, context);
                           if (_formKey.currentState!.validate()) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SignIn()));
+                            _authService.signUpWithEmailandPassword(email,
+                                password, name, contact, address, context);
+                            if (user.uid.value != '') {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                backgroundColor: Colors.green,
+                                content: Text(
+                                    'User signup  successfully go to login'),
+                              ));
+                            }
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => SignIn()));
                           }
                         },
                         child: const Text(

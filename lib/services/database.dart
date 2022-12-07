@@ -54,8 +54,6 @@ class DatabaseService {
     userController.contact = contact;
     fullname.value = result.get('FullName');
     userController.fullName = fullname;
-    score.value = result.get('score');
-    userController.score = score;
   }
 
   //Post Ref

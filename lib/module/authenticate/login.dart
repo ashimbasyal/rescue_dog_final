@@ -18,9 +18,9 @@ class _SignInState extends State<SignIn> {
 
   String email = '';
   String password = '';
-  String? name;
-  String? contact;
-  String? address;
+  String name = '';
+  String contact = '';
+  String address = '';
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +112,6 @@ class _SignInState extends State<SignIn> {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(const SnackBar(
                                 content: Text('User logged in successfully'),
-                                behavior: SnackBarBehavior.floating,
                               ));
                             }
                           }

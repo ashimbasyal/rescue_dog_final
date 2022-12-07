@@ -46,8 +46,9 @@ class AuthService {
       userController.email = storeemail;
       return _userFromFirebaseUser(user);
     } catch (e) {
-      return ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Email or Password incorrect')));
+      return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: Colors.red,
+          content: Text('Email or Password incorrect')));
     }
   }
 
@@ -58,16 +59,23 @@ class AuthService {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User? user = result.user;
-      await DatabaseService(uid: user?.uid)
-          .updateUserData(name, contact, address);
-      setUserData(email, name, contact, address);
-      return _userFromFirebaseUser(user!);
+
+      RxString uid = ''.obs;
+      uid.value = user!.uid;
+      userController.uid = uid;
+      //email store
+      RxString storeemail = ''.obs;
+      storeemail.value = email;
+      userController.email = storeemail;
+
+      // await DatabaseService(uid: user.uid)
+      //     .updateUserData(name, contact, address);
+      // setUserData(email, name, contact, address);
+      return _userFromFirebaseUser(user);
     } catch (e) {
-      return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        backgroundColor: Colors.green,
-        content: Text('Sucessfully Register Go to login. '),
-        behavior: SnackBarBehavior.floating,
-      ));
+      return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.red,
+          content: Text("Email already exist go to login page")));
     }
   }
 
